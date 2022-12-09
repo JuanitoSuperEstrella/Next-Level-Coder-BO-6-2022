@@ -1,6 +1,6 @@
 import pygame
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, MUSICA_FONDO, CLOUD, SOL, METEORITO
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
@@ -19,6 +19,8 @@ class Game:
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
         self.points = 0
+        self.music = MUSICA_FONDO
+        self.music.play()
         self.power_up_manager = PowerUpManager()
 
     def run(self):
@@ -47,6 +49,7 @@ class Game:
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
+        self.muestra_puntaje()
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
         pygame.display.update()
@@ -59,8 +62,20 @@ class Game:
             print(self.points)
         self.player.check_invincibility()
 
+    def muestra_puntaje(self):
+        fond = pygame.font.Font('freesansbold.ttf', 18)
+        text = fond.render(f'Points: {self.points}',True,(0, 0, 0))
+        textRect = text.get_rect()
+        textRect.center = (1000, 40)
+        self.screen.blit(text, textRect)
+
     def draw_background(self):
         image_width = BG.get_width()
+        self.screen.blit(CLOUD,(900, 120))
+        self.screen.blit(CLOUD,(650, 150))
+        self.screen.blit(CLOUD,(300, 120))
+        self.screen.blit(CLOUD,(450, 200))
+        self.screen.blit(SOL,(0, 0))
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
         self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
         if self.x_pos_bg <= -image_width:
